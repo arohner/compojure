@@ -8,7 +8,7 @@
 
 (ns compojure.control
   "Various macros for controling program flow."
-  (:use clojure.contrib.seq-utils))
+  (:use clojure.contrib.seq))
 
 (defmacro return
   "A do block that will always return the argument 'x'."

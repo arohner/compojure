@@ -8,8 +8,8 @@
 
 (ns compojure.str-utils
   "Utility functions for manipulating strings."
-  (:use clojure.contrib.seq-utils
-        clojure.contrib.str-utils)
+  (:use clojure.contrib.seq)
+  (:require [clojure.contrib.string :as str])
   (:import clojure.lang.Named))
 
 (defn escape
@@ -36,7 +36,7 @@
   ([text spacer]
     (map-str
       #(str spacer % "\n")
-       (re-split #"\n" text))))
+       (str/split #"\n" text))))
 
 (defn str*
   "A version of str that prefers the names of Named objects.
@@ -67,7 +67,7 @@
 (defn lines
   "Concatenate a sequence of strings into lines of a single string."
   [coll]
-  (str-join "\n" coll))
+  (str/join "\n" coll))
 
 (defn capitalize
   "Uppercase the first letter of a string, and lowercase the rest."

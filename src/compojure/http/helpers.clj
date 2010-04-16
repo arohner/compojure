@@ -11,14 +11,14 @@
   (:use compojure.encodings
         compojure.str-utils
         clojure.contrib.def
-        clojure.contrib.str-utils
         clojure.contrib.duck-streams)
+  (:require [clojure.contrib.string :as str])
   (:import java.io.File))
 
 (defn- encode-cookie
   "Encode sequence of key/value pairs a cookie."
   [name value attrs]
-  (str-join "; "
+  (str/join "; "
     (cons (str (urlencode name) "=" (urlencode value))
           (for [[key val] attrs] (str* key "=" val)))))
 

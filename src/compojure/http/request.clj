@@ -12,8 +12,8 @@
         compojure.encodings
         compojure.map-utils
         compojure.str-utils
-        clojure.contrib.duck-streams
-        clojure.contrib.str-utils)
+        clojure.contrib.duck-streams)
+  (:require [clojure.contrib.string :as str])
   (:import java.net.URLDecoder
            java.io.InputStreamReader))
 
@@ -29,7 +29,7 @@
         param-map))
     {}
     (remove blank?
-      (re-split separator param-string))))
+      (str/split separator param-string))))
 
 (defn parse-query-params
   "Parse parameters from the query string."

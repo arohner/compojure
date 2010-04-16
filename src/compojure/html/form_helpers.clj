@@ -12,7 +12,7 @@
         compojure.control
         compojure.str-utils
         clojure.contrib.def
-        clojure.contrib.seq-utils))
+        clojure.contrib.seq))
 
 ;; Global parameters for easy default values
 

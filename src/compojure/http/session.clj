@@ -68,6 +68,7 @@
 
 (defmethod destroy-session :memory
   [repository session]
+  (println "destroy-session: session=" session "memory-sessions=" memory-sessions)
   (dosync
     (alter memory-sessions
       dissoc (session :id))))

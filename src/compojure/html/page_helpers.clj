@@ -10,8 +10,8 @@
   "Functions for generating document and header boilerplate."
   (:use compojure.control
         compojure.html.gen
-        compojure.str-utils
-        clojure.contrib.str-utils)
+        compojure.str-utils)
+  (:require [clojure.contrib.string :as str])
   (:import java.net.URLEncoder))
 
 (def doctype
@@ -70,7 +70,7 @@
   (let [enc #(URLEncoder/encode (str* %))]
     (if (string? string-or-map)
       (enc string-or-map)
-      (str-join "&"
+      (str/join "&"
         (map (fn [[key val]] (str (enc key) "=" (enc val)))
              string-or-map)))))
 

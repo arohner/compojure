@@ -10,8 +10,8 @@
   "Various middleware functions."
   (:use compojure.http.routes
         compojure.str-utils
-        clojure.contrib.def
-        clojure.contrib.str-utils))
+        clojure.contrib.def)
+  (:require [clojure.contrib.string :as str]))
 
 (defn header-option
   "Converts a header option KeyValue into a string."
@@ -24,7 +24,7 @@
 (defn header-options
   "Converts a map into an HTTP header options string."
   [m delimiter]
-  (str-join delimiter
+  (str/join delimiter
     (remove nil? (map header-option m))))
 
 (defn with-headers
@@ -79,7 +79,7 @@
   [uri]
   (if (and (not (= "/" uri))
            (.endsWith uri "/"))
-    (chop uri)
+    (str/chop uri)
     uri))
 
 (defn ignore-trailing-slash
@@ -106,7 +106,7 @@
 (defn- extension
   "Returns the text after the last . of a String or nil."
   [s]
-  (last (re-split #"\." s)))
+  (last (str/split #"\." s)))
 
 (defn- request-mimetype
   "Derives the mimetype from a request.  See with-mimetypes for options."
