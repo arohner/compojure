@@ -100,7 +100,7 @@
   (fn [request]
     (if (:route-fn request)
       (render request
-              (if (:route-bindings request)
+              (if (vector? (:route-bindings request))
                 (apply (:route-fn request) (get-bindings (:route-bindings request) request))
                 ((:route-fn request) request)))
       (handler request))))
