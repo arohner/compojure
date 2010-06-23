@@ -42,10 +42,13 @@
           ~@(if more [more `(dissoc (~request :params) ~@(map keyword args))])]
        ~@body)))
 
+(defn compile-route* [method route bindings fn]
+
+  (println "compile-route*: " route)
+  [method (prepare-route route) bindings fn])
+
 (defmacro compile-route [method route bindings & body]
-  (let [route (prepare-route route)
-        route-fn `(fn [~bindings] ~@body)]
-    `[~method ~route (quote ~bindings) ~route-fn]))
+  `(compile-route* ~method ~route (quote ~bindings) (fn [~bindings] ~@body)))
 
 (defn combine-routes
   ""
