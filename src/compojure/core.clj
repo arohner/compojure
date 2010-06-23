@@ -42,7 +42,7 @@
           ~@(if more [more `(dissoc (~request :params) ~@(map keyword args))])]
        ~@body)))
 
-(defmacro compile-route [method route bindings body]
+(defmacro compile-route [method route bindings & body]
   (let [route (prepare-route route)
         route-fn `(fn [~bindings] ~@body)]
     `[~method ~route (quote ~bindings) ~route-fn]))
@@ -77,7 +77,7 @@
               (get (request :params) (keyword %))) bindings)
     nil))
 
-(defn- matches? [request [method path bindings route-fn]]
+(defn matches? [request [method path bindings route-fn]]
   (and (method-matches method request) (route-matches path request)))
 
 (defn find-matching-route
@@ -104,3 +104,8 @@
                 (apply (:route-fn request) (get-bindings (:route-bindings request) request))
                 ((:route-fn request) request)))
       (handler request))))
+
+(defn wrap-routes [handler routes]
+  (-> handler
+      (call-matching-route)
+      (find-matching-route routes)))
