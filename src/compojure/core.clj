@@ -43,8 +43,6 @@
        ~@body)))
 
 (defn compile-route* [method route bindings fn]
-
-  (println "compile-route*: " route)
   [method (prepare-route route) bindings fn])
 
 (defmacro compile-route [method route bindings & body]
@@ -112,3 +110,27 @@
   (-> handler
       (call-matching-route)
       (find-matching-route routes)))
+
+(defmacro GET "Generate a GET route."
+  [path args & body]
+  `[(compile-route :get ~path ~args ~@body)])
+
+(defmacro POST "Generate a POST route."
+  [path args & body]
+  `[(compile-route :post ~path ~args ~@body)])
+
+(defmacro PUT "Generate a PUT route."
+  [path args & body]
+  `[(compile-route :put ~path ~args ~@body)])
+
+(defmacro DELETE "Generate a DELETE route."
+  [path args & body]
+  `[(compile-route :delete ~path ~args ~@body)])
+
+(defmacro HEAD "Generate a HEAD route."
+  [path args & body]
+  `[(compile-route :head ~path ~args ~@body)])
+
+(defmacro ANY "Generate a route that matches any method."
+  [path args & body]
+  `[(compile-route nil ~path ~args ~@body)])
