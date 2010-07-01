@@ -104,7 +104,7 @@
       (try
        (render request
               (if (vector? (:route-bindings request))
-                (apply (:route-fn request) (winston.utils/inspect (get-bindings (:route-bindings request) request)))
+                (apply (:route-fn request) (get-bindings (:route-bindings request) request))
                 ((:route-fn request) request)))
        (catch Exception e
          (throw (Exception. (str "While calling " (:route-fn request) " w/ " request) e))))
