@@ -46,7 +46,8 @@
   [method (prepare-route route) bindings fn])
 
 (defmacro compile-route [method route bindings & body]
-  `(compile-route* ~method ~route (quote ~bindings) (fn [~bindings] ~@body)))
+  (let [fn-sig (if (> (count bindings) 0) [bindings] [])]
+    `(compile-route* ~method ~route (quote ~bindings) (fn ~fn-sig ~@body))))
 
 (defn combine-routes
   ""
@@ -100,10 +101,13 @@
   [handler]
   (fn [request]
     (if (:route-fn request)
-      (render request
+      (try
+       (render request
               (if (vector? (:route-bindings request))
-                (apply (:route-fn request) (get-bindings (:route-bindings request) request))
+                (apply (:route-fn request) (winston.utils/inspect (get-bindings (:route-bindings request) request)))
                 ((:route-fn request) request)))
+       (catch Exception e
+         (throw (Exception. (str "While calling " (:route-fn request) " w/ " request) e))))
       (handler request))))
 
 (defn wrap-routes [handler routes]
